@@ -52,7 +52,14 @@ class ProcesarVenta {
     const venta = new Venta(null, clienteId, new Date(), total);
 
     // Aplicar descuento si es cliente con puntos
-    const descuento = cliente.puntos >= 20 ? (cliente.puntos >= 100 ? 10 : 5) : 0;
+    let descuento = 0;
+    if (cliente.puntos >= 200) {
+      descuento = 100;
+    } else if (cliente.puntos >= 100) {
+      descuento = 10;
+    } else if (cliente.puntos >= 20) {
+      descuento = 5;
+    }
     const totalFinal = descuento > 0 ? venta.aplicarDescuento(descuento) : total;
 
     // Guardar venta

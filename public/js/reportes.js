@@ -73,7 +73,10 @@ function renderizarReporteClientes(clientes) {
     let badgeClase = 'bg-secondary';
     let nivel = 'Sin Beneficio';
 
-    if (cliente.puntos >= 100) {
+    if (cliente.puntos >= 200) {
+      badgeClase = 'bg-success';
+      nivel = 'Diamond';
+    } else if (cliente.puntos >= 100) {
       badgeClase = 'bg-danger';
       nivel = 'Platinum';
     } else if (cliente.puntos >= 50) {

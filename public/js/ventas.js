@@ -80,24 +80,48 @@ function inicializarEventos() {
   });
 }
 
+function obtenerPorcentajeDescuento(puntos) {
+  if (puntos >= 200) {
+    return 100;
+  } else if (puntos >= 100) {
+    return 10;
+  } else if (puntos >= 50) {
+    return 5;
+  } else if (puntos >= 20) {
+    return 5;
+  }
+  return 0;
+}
+
 function actualizarDescuento() {
   const select = document.getElementById('clienteSelect');
   const option = select.options[select.selectedIndex];
   const puntos = parseInt(option.dataset.puntos || 0);
-  
-  let descuentoInfo = 'Sin descuento';
-  if (puntos >= 100) {
-    descuentoInfo = '10% descuento';
-  } else if (puntos >= 50) {
-    descuentoInfo = '5% descuento';
-  } else if (puntos >= 20) {
-    descuentoInfo = 'Descuento disponible';
+  const porcentaje = obtenerPorcentajeDescuento(puntos);
+
+  const descuentoInfoElement = document.getElementById('descuentoInfo');
+  const gratisBanner = document.getElementById('gratisBanner');
+  const giftSelectionContainer = document.getElementById('giftSelectionContainer');
+
+  if (puntos >= 200) {
+    descuentoInfoElement.textContent = 'Compra gratis con 200 puntos';
+    gratisBanner.classList.remove('d-none');
+    giftSelectionContainer.classList.remove('d-none');
   } else {
-    const faltan = 20 - puntos;
-    descuentoInfo = `Faltan ${faltan} punto${faltan === 1 ? '' : 's'} para descuento`;
+    gratisBanner.classList.add('d-none');
+    giftSelectionContainer.classList.add('d-none');
+    if (puntos >= 100) {
+      descuentoInfoElement.textContent = '10% descuento';
+    } else if (puntos >= 50) {
+      descuentoInfoElement.textContent = '5% descuento';
+    } else if (puntos >= 20) {
+      descuentoInfoElement.textContent = 'Descuento disponible';
+    } else {
+      const faltan = 20 - puntos;
+      descuentoInfoElement.textContent = `Faltan ${faltan} punto${faltan === 1 ? '' : 's'} para descuento`;
+    }
   }
-  
-  document.getElementById('descuentoInfo').textContent = descuentoInfo;
+
   calcularTotal();
 }
 
@@ -171,15 +195,7 @@ function calcularTotal() {
   const select = document.getElementById('clienteSelect');
   const option = select.options[select.selectedIndex];
   const puntos = parseInt(option.dataset.puntos || 0);
-  let porcentajeDescuento = 0;
-
-  if (puntos >= 100) {
-    porcentajeDescuento = 10;
-  } else if (puntos >= 50) {
-    porcentajeDescuento = 5;
-  } else if (puntos >= 20) {
-    porcentajeDescuento = 5;
-  }
+  const porcentajeDescuento = obtenerPorcentajeDescuento(puntos);
 
   const descuentoAmount = (subtotal * porcentajeDescuento) / 100;
   const total = subtotal - descuentoAmount;
@@ -220,7 +236,13 @@ async function procesarVenta() {
       detalles
     });
 
-    mostrarAlerta(`¡Venta procesada exitosamente! Puntos ganados: ${resultado.datos.puntosGanados}`, 'success');
+    const giftSelect = document.getElementById('giftSelect');
+    const regalo = giftSelect ? giftSelect.value : '';
+    let mensaje = `¡Venta procesada exitosamente! Puntos ganados: ${resultado.datos.puntosGanados}`;
+    if (resultado.datos.descuentoAplicado > 0 && resultado.datos.descuentoAplicado >= resultado.datos.totalFinal) {
+      mensaje = `¡Venta completamente gratis! Regalo seleccionado: ${regalo || 'No seleccionado'}`;
+    }
+    mostrarAlerta(mensaje, 'success');
     bootstrap.Modal.getInstance(document.getElementById('ventaModal')).hide();
     resetFormulario();
     await cargarDatos();
@@ -259,6 +281,10 @@ function resetFormulario() {
   poblarSelectMedicamentos();
   document.getElementById('clienteSelect').value = '';
   document.getElementById('descuentoInfo').textContent = 'Sin descuento';
+  document.getElementById('gratisBanner').classList.add('d-none');
+  const giftSelectionContainer = document.getElementById('giftSelectionContainer');
+  giftSelectionContainer.classList.add('d-none');
+  document.getElementById('giftSelect').value = '';
   calcularTotal();
 }
 

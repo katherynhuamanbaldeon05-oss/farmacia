@@ -27,7 +27,9 @@ class Cliente {
    * Obtiene el descuento según los puntos acumulados
    */
   obtenerDescuento() {
-    if (this.puntos >= 100) {
+    if (this.puntos >= 200) {
+      return 100; // 100% gratis
+    } else if (this.puntos >= 100) {
       return 10; // 10%
     } else if (this.puntos >= 20) {
       return 5; // 5%

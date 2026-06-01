@@ -123,7 +123,9 @@ function obtenerEstadoStock(cantidad, alerta) {
  * Función para obtener el nivel de descuento
  */
 function obtenerNivelDescuento(puntos) {
-  if (puntos >= 100) {
+  if (puntos >= 200) {
+    return 'Compra gratis';
+  } else if (puntos >= 100) {
     return '10% descuento';
   } else if (puntos >= 20) {
     return '5% descuento';
