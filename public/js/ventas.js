@@ -90,6 +90,11 @@ function actualizarDescuento() {
     descuentoInfo = '10% descuento';
   } else if (puntos >= 50) {
     descuentoInfo = '5% descuento';
+  } else if (puntos >= 20) {
+    descuentoInfo = 'Descuento disponible';
+  } else {
+    const faltan = 20 - puntos;
+    descuentoInfo = `Faltan ${faltan} punto${faltan === 1 ? '' : 's'} para descuento`;
   }
   
   document.getElementById('descuentoInfo').textContent = descuentoInfo;
@@ -171,6 +176,8 @@ function calcularTotal() {
   if (puntos >= 100) {
     porcentajeDescuento = 10;
   } else if (puntos >= 50) {
+    porcentajeDescuento = 5;
+  } else if (puntos >= 20) {
     porcentajeDescuento = 5;
   }
 

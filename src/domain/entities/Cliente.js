@@ -29,7 +29,7 @@ class Cliente {
   obtenerDescuento() {
     if (this.puntos >= 100) {
       return 10; // 10%
-    } else if (this.puntos >= 50) {
+    } else if (this.puntos >= 20) {
       return 5; // 5%
     }
     return 0;

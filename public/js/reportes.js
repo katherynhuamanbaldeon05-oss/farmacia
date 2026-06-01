@@ -79,6 +79,9 @@ function renderizarReporteClientes(clientes) {
     } else if (cliente.puntos >= 50) {
       badgeClase = 'bg-warning text-dark';
       nivel = 'Gold';
+    } else if (cliente.puntos >= 20) {
+      badgeClase = 'bg-info text-dark';
+      nivel = 'Bronce';
     }
 
     return `

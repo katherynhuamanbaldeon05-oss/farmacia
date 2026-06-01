@@ -29,7 +29,7 @@ function renderizarClientes(lista) {
 
   tbody.innerHTML = lista.map(cliente => {
     const beneficio = obtenerNivelDescuento(cliente.puntos);
-    const badgeClase = cliente.puntos >= 100 ? 'bg-danger' : cliente.puntos >= 50 ? 'bg-warning' : 'bg-secondary';
+    const badgeClase = cliente.puntos >= 100 ? 'bg-danger' : cliente.puntos >= 50 ? 'bg-warning' : cliente.puntos >= 20 ? 'bg-info text-dark' : 'bg-secondary';
     
     return `
       <tr>
