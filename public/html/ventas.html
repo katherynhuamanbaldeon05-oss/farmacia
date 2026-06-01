@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ventas - Farmacia System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <i class="fas fa-pills"></i> Farmacia System
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="medicamentos.html">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="clientes.html">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="ventas.html">Ventas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="reportes.html">Reportes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-5">
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <h1><i class="fas fa-receipt"></i> Gestión de Ventas</h1>
+      </div>
+      <div class="col-md-4 text-end">
+        <button class="btn btn-info btn-lg" data-bs-toggle="modal" data-bs-target="#ventaModal">
+          <i class="fas fa-plus"></i> Nueva Venta
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabla de ventas -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-info">
+                  <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>DNI</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Descuento</th>
+                    <th>Total Neto</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="ventasBody">
+                  <tr><td colspan="8" class="text-center text-muted">Cargando...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Venta -->
+  <div class="modal fade" id="ventaModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva Venta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="ventaForm">
+            <div class="row mb-4">
+              <div class="col-md-8">
+                <label for="clienteSelect" class="form-label">Cliente *</label>
+                <select class="form-select form-select-lg" id="clienteSelect" required>
+                  <option value="">-- Seleccionar Cliente --</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Descuento Disponible</label>
+                <div class="alert alert-info mb-0" id="descuentoInfo">
+                  Sin descuento
+                </div>
+              </div>
+            </div>
+
+            <h6>Medicamentos:</h6>
+            <div id="detallesContainer">
+              <div class="detalle-item mb-3">
+                <div class="row">
+                  <div class="col-md-5">
+                    <label class="form-label">Medicamento</label>
+                    <select class="form-select medicamento-select" required>
+                      <option value="">-- Seleccionar --</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" class="form-control cantidad-input" min="1" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Precio Unitario</label>
+                    <input type="number" class="form-control precio-unitario" disabled>
+                  </div>
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-danger btn-sm mt-4 btn-eliminar">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary btn-sm mb-3" id="btnAgregarMedicamento">
+              <i class="fas fa-plus"></i> Agregar Medicamento
+            </button>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <div class="mb-2">
+                  <strong>Subtotal:</strong> S/ <span id="subtotal">0.00</span>
+                </div>
+                <div class="mb-2">
+                  <strong>Descuento:</strong> S/ <span id="descuentoAmount">0.00</span>
+                </div>
+                <div class="alert alert-primary">
+                  <strong>Total a Pagar:</strong> S/ <span id="totalVenta" style="font-size: 1.5rem;">0.00</span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnProcesarVenta">Procesar Venta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <p class="mb-0">&copy; 2024 Sistema de Gestión de Farmacia</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/api-client.js"></script>
+  <script src="../js/ventas.js"></script>
+</body>
+</html>

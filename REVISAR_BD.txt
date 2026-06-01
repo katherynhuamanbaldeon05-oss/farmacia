@@ -1,0 +1,53 @@
+📋 CHECKLIST PARA VERIFICAR LA BASE DE DATOS
+
+Sigue estos pasos en phpMyAdmin:
+
+1. VERIFICA QUE XAMPP ESTÁ CORRIENDO
+   - Apache: ✓ (Debe estar en verde)
+   - MySQL: ✓ (Debe estar en verde)
+
+2. ABRE phpMyAdmin
+   - URL: http://localhost/phpmyadmin
+   - Usuario: root
+   - Contraseña: (vacía - solo presiona Enter)
+
+3. VERIFICA QUE FARMACIA_DB EXISTE
+   - En la columna izquierda deberías ver: farmacia_db
+   - Si NO está, tienes que crearla
+
+4. CREAR LA BASE DE DATOS (si no existe)
+   - Haz clic en SQL
+   - Copia y ejecuta TODO el código del archivo schema.sql
+
+5. VERIFICA LAS TABLAS
+   Haz clic en farmacia_db y deberías ver:
+   ✓ medicamentos (10 filas)
+   ✓ clientes (5 filas)
+   ✓ ventas (vacía)
+   ✓ detalles_venta (vacía)
+
+6. PRUEBA LA CONEXIÓN DIRECTA
+   En phpMyAdmin:
+   - Haz clic en "medicamentos" tabla
+   - Deberías ver los 10 medicamentos listados
+   
+   Si ves los 10 medicamentos, la BD está bien.
+
+7. SI SIGUE DANDO ERROR "FORBIDDEN"
+   Posible solución:
+   - El usuario MySQL root no tiene permisos
+   - Crea un nuevo usuario en phpMyAdmin:
+     
+     Nombre de usuario: farmacia
+     Contraseña: farmacia123
+     Host: localhost
+     
+     Dale permisos sobre farmacia_db
+
+   Luego actualiza el .env:
+   DB_USER=farmacia
+   DB_PASSWORD=farmacia123
+
+8. REINICIA EL SERVIDOR NODE
+   cd d:\xampp\htdocs\farmacia
+   npm run dev

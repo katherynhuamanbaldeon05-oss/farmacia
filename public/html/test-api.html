@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test API - Farmacia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>🧪 Test API Farmacia</h1>
+    <hr>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <h3>GET Medicamentos</h3>
+        <button class="btn btn-primary" onclick="testGetMedicamentos()">Probar</button>
+        <pre id="medicamentosResult" class="bg-light p-3 mt-2" style="max-height: 300px; overflow-y: auto;"></pre>
+      </div>
+      
+      <div class="col-md-6">
+        <h3>GET Clientes</h3>
+        <button class="btn btn-primary" onclick="testGetClientes()">Probar</button>
+        <pre id="clientesResult" class="bg-light p-3 mt-2" style="max-height: 300px; overflow-y: auto;"></pre>
+      </div>
+    </div>
+
+    <hr>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <h3>POST Medicamento</h3>
+        <form id="formMedicamento">
+          <input type="text" class="form-control mb-2" id="nombre" placeholder="Nombre" value="Test Med">
+          <input type="text" class="form-control mb-2" id="descripcion" placeholder="Descripción" value="Test">
+          <input type="number" class="form-control mb-2" id="precio" placeholder="Precio" value="10.50" step="0.01">
+          <input type="number" class="form-control mb-2" id="cantidad" placeholder="Cantidad" value="50">
+          <button type="button" class="btn btn-success" onclick="testPostMedicamento()">Crear</button>
+        </form>
+        <pre id="postResult" class="bg-light p-3 mt-2" style="max-height: 300px; overflow-y: auto;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+
+    async function testGetMedicamentos() {
+      try {
+        const response = await fetch(`${API_URL}/medicamentos`);
+        const data = await response.json();
+        document.getElementById('medicamentosResult').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('medicamentosResult').textContent = 'ERROR: ' + error.message;
+      }
+    }
+
+    async function testGetClientes() {
+      try {
+        const response = await fetch(`${API_URL}/clientes`);
+        const data = await response.json();
+        document.getElementById('clientesResult').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('clientesResult').textContent = 'ERROR: ' + error.message;
+      }
+    }
+
+    async function testPostMedicamento() {
+      try {
+        const datos = {
+          nombre: document.getElementById('nombre').value,
+          descripcion: document.getElementById('descripcion').value,
+          precio: parseFloat(document.getElementById('precio').value),
+          cantidad: parseInt(document.getElementById('cantidad').value)
+        };
+
+        const response = await fetch(`${API_URL}/medicamentos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        });
+
+        const data = await response.json();
+        document.getElementById('postResult').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        document.getElementById('postResult').textContent = 'ERROR: ' + error.message;
+      }
+    }
+
+    // Auto-test al cargar
+    window.addEventListener('load', () => {
+      testGetMedicamentos();
+      testGetClientes();
+    });
+  </script>
+</body>
+</html>
