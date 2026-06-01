@@ -93,23 +93,38 @@ function obtenerPorcentajeDescuento(puntos) {
   return 0;
 }
 
+function obtenerHitoPuntos(puntos) {
+  if (puntos >= 100) {
+    return Math.floor(puntos / 100) * 100;
+  }
+  return 0;
+}
+
 function actualizarDescuento() {
   const select = document.getElementById('clienteSelect');
   const option = select.options[select.selectedIndex];
   const puntos = parseInt(option.dataset.puntos || 0);
   const porcentaje = obtenerPorcentajeDescuento(puntos);
+  const hito = obtenerHitoPuntos(puntos);
 
   const descuentoInfoElement = document.getElementById('descuentoInfo');
-  const gratisBanner = document.getElementById('gratisBanner');
-  const giftSelectionContainer = document.getElementById('giftSelectionContainer');
+  const giftBannerRow = document.getElementById('giftBannerRow');
+  const giftBanner = document.getElementById('giftBanner');
+
+  const giftSelectContainer = document.getElementById('giftSelectContainer');
+
+  if (hito > 0) {
+    giftBannerRow.classList.remove('d-none');
+    giftBanner.textContent = `¡Felicidades has llegado a los ${hito} puntos!`;
+  } else {
+    giftBannerRow.classList.add('d-none');
+  }
 
   if (puntos >= 200) {
-    descuentoInfoElement.textContent = 'Compra gratis con 200 puntos';
-    gratisBanner.classList.remove('d-none');
-    giftSelectionContainer.classList.remove('d-none');
+    descuentoInfoElement.textContent = 'Compra gratis';
+    giftSelectContainer.classList.remove('d-none');
   } else {
-    gratisBanner.classList.add('d-none');
-    giftSelectionContainer.classList.add('d-none');
+    giftSelectContainer.classList.add('d-none');
     if (puntos >= 100) {
       descuentoInfoElement.textContent = '10% descuento';
     } else if (puntos >= 50) {
@@ -281,9 +296,10 @@ function resetFormulario() {
   poblarSelectMedicamentos();
   document.getElementById('clienteSelect').value = '';
   document.getElementById('descuentoInfo').textContent = 'Sin descuento';
-  document.getElementById('gratisBanner').classList.add('d-none');
-  const giftSelectionContainer = document.getElementById('giftSelectionContainer');
-  giftSelectionContainer.classList.add('d-none');
+  const giftBannerRow = document.getElementById('giftBannerRow');
+  giftBannerRow.classList.add('d-none');
+  const giftSelectContainer = document.getElementById('giftSelectContainer');
+  giftSelectContainer.classList.add('d-none');
   document.getElementById('giftSelect').value = '';
   calcularTotal();
 }
