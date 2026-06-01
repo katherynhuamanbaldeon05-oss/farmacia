@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insertar usuarios de ejemplo
--- Usuario: admin, Contraseña: admin123
--- Usuario: vendedor, Contraseña: vendedor123
+-- Usuario: farmacia@gmail.com, Contraseña: farmacia1234
 INSERT INTO usuarios (nombre, email, usuario, contrasena, rol) VALUES
 ('Farmacia', 'farmacia@gmail.com', 'farmacia@gmail.com', '$2a$10$q.QmUmnWen2F./DD.8kh2Or1gYk0hpOCUAglxOI4SEAVOvl6laqsq', 'admin');
 
